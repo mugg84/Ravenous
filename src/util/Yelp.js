@@ -1,3 +1,5 @@
+import Business from "../components/Business/Business";
+
 const apiKey =
   "B0yNoUYVXA7RVOGgVDlMj-lA5BFBc5UmpWJRieYty6DCzERgAxqfkQclNKBZcuGU1h6zZ35f1dyR4_1punYX_fALUjEZhk8nDFL_Dyc6bgVuZvRhJM7gv2LyDBC9XnYx";
 
@@ -19,8 +21,10 @@ const Yelp = {
           return jsonResponse.businesses.map((business) => ({
             id: business.id,
             imageSrc: business.image_url,
+            url: business.url,
             name: business.name,
             address: business.location.address1,
+            coordinates: `http://www.google.com/maps/place/${business.coordinates.latitude},${business.coordinates.longitude}`,
             city: business.location.city,
             state: business.location.state,
             zipCode: business.location.zip_code,
