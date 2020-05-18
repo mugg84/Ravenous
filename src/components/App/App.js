@@ -10,22 +10,35 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { businesses: [] };
+    this.state = { businesses: [], suggestion: {} };
 
     this.searchYelp = this.searchYelp.bind(this);
+    this.autocompleteYelp = this.autocompleteYelp.bind(this);
+  }
+
+  autocompleteYelp(input, latitude, longitude) {
+    Yelp.autocomplete(input, latitude, longitude).then((suggestion) => {
+      this.setState({ suggestion: suggestion });
+    });
   }
 
   searchYelp(term, location, sortBy) {
-    Yelp.search(term, location, sortBy).then((businesses) => {
-      this.setState({ businesses: businesses });
-    });
+    if (term && location) {
+      Yelp.search(term, location, sortBy).then((businesses) => {
+        this.setState({ businesses: businesses });
+      });
+    }
   }
 
   render() {
     return (
       <div className="App">
         <h1>ravenous</h1>
-        <SearchBar searchYelp={this.searchYelp} />
+        <SearchBar
+          searchYelp={this.searchYelp}
+          autocompleteYelp={this.autocompleteYelp}
+          suggestion={this.state.suggestion}
+        />
         <BusinessList businesses={this.state.businesses} />
       </div>
     );

@@ -3,11 +3,14 @@ import "./Business.css";
 
 class Business extends React.Component {
   render() {
-    console.log(this.props.business);
     return (
       <div className="Business">
         <div className="image-container">
-          <a href={this.props.business.url} target="_blank">
+          <a
+            href={this.props.business.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <img src={this.props.business.imageSrc} alt="" />
           </a>
         </div>
@@ -15,7 +18,11 @@ class Business extends React.Component {
         <div className="Business-information">
           <div className="Business-address">
             <p>
-              <a href={this.props.business.coordinates} target="_blank">
+              <a
+                href={`http://www.google.com/maps/place/${this.props.business.address}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {this.props.business.address}
               </a>
             </p>

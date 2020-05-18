@@ -1,5 +1,3 @@
-import Business from "../components/Business/Business";
-
 const apiKey =
   "B0yNoUYVXA7RVOGgVDlMj-lA5BFBc5UmpWJRieYty6DCzERgAxqfkQclNKBZcuGU1h6zZ35f1dyR4_1punYX_fALUjEZhk8nDFL_Dyc6bgVuZvRhJM7gv2LyDBC9XnYx";
 
@@ -24,7 +22,6 @@ const Yelp = {
             url: business.url,
             name: business.name,
             address: business.location.address1,
-            coordinates: `http://www.google.com/maps/place/${business.coordinates.latitude},${business.coordinates.longitude}`,
             city: business.location.city,
             state: business.location.state,
             zipCode: business.location.zip_code,
@@ -35,6 +32,24 @@ const Yelp = {
         }
       });
   },
+  autocomplete(input, latitude, longitude) {
+    if (input && latitude && longitude) {
+      return fetch(
+        `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/autocomplete?text=${input}&latitude=${latitude}&longitude=${longitude}`,
+        {
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+          },
+        }
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((jsonResponse) => console.log(jsonResponse));
+    }
+  },
 };
+
+Yelp.autocomplete();
 
 export default Yelp;

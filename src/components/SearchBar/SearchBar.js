@@ -1,6 +1,8 @@
 import React from "react";
 import "./SearchBar.css";
 
+import get from "../../util/Geolocation";
+
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
@@ -9,6 +11,7 @@ class SearchBar extends React.Component {
       term: "",
       location: "",
       sortBy: "best_match",
+      coordinates: [41.40338, 41.403386],
     };
 
     this.handleTermChange = this.handleTermChange.bind(this);
@@ -17,6 +20,7 @@ class SearchBar extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
     this.handleSortByChange = this.handleSortByChange.bind(this);
+    this.handleAutocomplete = this.handleAutocomplete.bind(this);
 
     this.sortByOptions = {
       "Best Match": "best_match",
@@ -61,6 +65,12 @@ class SearchBar extends React.Component {
     event.preventDefault();
   }
 
+  handleAutocomplete(event) {
+    if (this.state.location) {
+      this.props.autocompleteYelp(this.state.location, 41.40338, 41.40338);
+    }
+  }
+
   handleOnClick(event) {
     this.handleSearch(event);
   }
@@ -68,6 +78,8 @@ class SearchBar extends React.Component {
   handleKeyPress(event) {
     if (event.key === "Enter") {
       this.handleSearch(event);
+    } else {
+      this.handleAutocomplete(event);
     }
   }
 
@@ -94,11 +106,13 @@ class SearchBar extends React.Component {
         </div>
         <div className="SearchBar-fields">
           <input
+            className="input"
             placeholder="Search Businesses"
             onChange={this.handleTermChange}
             onKeyPress={this.handleKeyPress}
           />
           <input
+            className="input"
             placeholder="Where?"
             onChange={this.handleLocationChange}
             onKeyPress={this.handleKeyPress}
