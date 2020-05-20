@@ -18,7 +18,8 @@ class App extends React.Component {
 
   autocompleteYelp(input, latitude, longitude) {
     Yelp.autocomplete(input, latitude, longitude).then((suggestion) => {
-      this.setState({ suggestion: suggestion });
+      this.setState({ suggestion: suggestion.terms[1] });
+      console.log(this.state.suggestion);
     });
   }
 

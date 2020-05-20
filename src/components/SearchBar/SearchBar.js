@@ -1,7 +1,7 @@
 import React from "react";
 import "./SearchBar.css";
 
-import get from "../../util/Geolocation";
+import getLocation from "../../util/Geolocation";
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -11,7 +11,7 @@ class SearchBar extends React.Component {
       term: "",
       location: "",
       sortBy: "best_match",
-      coordinates: [41.40338, 41.403386],
+      coordinates: { lat: "", long: "" },
     };
 
     this.handleTermChange = this.handleTermChange.bind(this);
@@ -21,6 +21,7 @@ class SearchBar extends React.Component {
     this.handleOnClick = this.handleOnClick.bind(this);
     this.handleSortByChange = this.handleSortByChange.bind(this);
     this.handleAutocomplete = this.handleAutocomplete.bind(this);
+    this.getActualLocation = this.getActualLocation.bind(this);
 
     this.sortByOptions = {
       "Best Match": "best_match",
@@ -28,6 +29,16 @@ class SearchBar extends React.Component {
       "Most Reviewed": "review_count",
       "Nearest Match": "distance",
     };
+  }
+
+  getActualLocation() {
+    getLocation()
+      .then((location) => {
+        this.setState({
+          coordinates: { lat: location.lat, long: location.long },
+        });
+      })
+      .catch((error) => console.log(error));
   }
 
   getSortByClass(sortByOption) {
@@ -66,8 +77,12 @@ class SearchBar extends React.Component {
   }
 
   handleAutocomplete(event) {
-    if (this.state.location) {
-      this.props.autocompleteYelp(this.state.location, 41.40338, 41.40338);
+    if (this.state.location.length > 0) {
+      this.props.autocompleteYelp(
+        this.state.location,
+        this.state.coordinates.lat,
+        this.state.coordinates.long
+      );
     }
   }
 
@@ -79,6 +94,9 @@ class SearchBar extends React.Component {
     if (event.key === "Enter") {
       this.handleSearch(event);
     } else {
+      if (this.state.coordinates.lat == "") {
+        this.getActualLocation();
+      }
       this.handleAutocomplete(event);
     }
   }

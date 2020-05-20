@@ -45,11 +45,12 @@ const Yelp = {
         .then((response) => {
           return response.json();
         })
-        .then((jsonResponse) => console.log(jsonResponse));
+        .then((jsonResponse) => {
+          console.log(jsonResponse);
+          return jsonResponse;
+        });
     }
   },
 };
-
-Yelp.autocomplete();
 
 export default Yelp;

@@ -1,20 +1,17 @@
-var pos;
+const loc = {};
 
-function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition);
-  }
-}
-
-function showPosition(position) {
-  var a = position.coords.latitude;
-  var b = position.coords.longitude;
-
-  pos = [a, b];
-
-  console.log(pos);
-}
-
-getLocation();
+const getLocation = () =>
+  new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const location = {
+          lat: position.coords.latitude,
+          long: position.coords.longitude,
+        };
+        resolve(location); // Resolve with location. location can now be accessed in the .then method.
+      },
+      (err) => reject(err) // Reject with err. err can now be accessed in the .catch method.
+    );
+  });
 
 export default getLocation;
