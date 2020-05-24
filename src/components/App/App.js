@@ -28,8 +28,12 @@ class App extends React.Component {
   }
 
   async searchYelp(term, location, sortBy) {
-    let businesses = await Yelp.search(term, location, sortBy);
-    this.setState({ businesses: businesses });
+    if (term && location) {
+      let businesses = await Yelp.search(term, location, sortBy);
+      if (businesses) {
+        this.setState({ businesses: businesses });
+      }
+    }
   }
 
   render() {

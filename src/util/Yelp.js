@@ -15,17 +15,20 @@ const Yelp = {
       let jsonResponse = await response.json();
       if (jsonResponse.businesses) {
         return jsonResponse.businesses.map((business) => {
+          console.log(business);
           return {
             id: business.id,
             imageSrc: business.image_url,
             name: business.name,
+            url: business.url,
+            googleMaps: `https://google.com/maps/place/${business.location.address1}`,
             address: business.location.address1,
             city: business.location.city,
-            state: business.location.display_address.state,
-            zipCode: business.location.display_address.zip,
+            state: business.location.state,
+            zipCode: business.location.zip_code,
             category: business.categories[0].title,
             rating: business.rating,
-            review: business.review_count,
+            reviewCount: business.review_count,
           };
         });
       }
