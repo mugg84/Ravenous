@@ -1,13 +1,26 @@
 import React from "react";
 import "./SearchBar.css";
 
-import PlacesAutocomplete from "react-places-autocomplete";
+//Import React Script Libraray to load Google object
+import Script from "react-load-script";
+
+//IMPORTANT
+
+const googleKey = "add you api key";
 
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { term: "", location: "", sortBy: "best_match" };
+    this.state = {
+      term: "",
+      location: "",
+      sortBy: "best_match",
+
+      //states for autcmplete
+      city: "",
+    };
+
     this.handleTermChange = this.handleTermChange.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
@@ -16,8 +29,10 @@ class SearchBar extends React.Component {
       "Best Match": "best_match",
       "Highest Rated": "rating",
       "Most Reviewed": "review_count",
-      "Most Nearby": "distance",
+      "The Nearest": "distance",
     };
+
+    this.googleUrl = `https://maps.googleapis.com/maps/api/js?key=${googleKey}&libraries=places`;
   }
 
   // give active class to option selected
@@ -61,6 +76,38 @@ class SearchBar extends React.Component {
     }
   }
 
+  handleScriptLoad = () => {
+    const options = {
+      types: ["(cities)"],
+    }; // To disable any eslint 'google not defined' errors
+
+    // Initialize Google Autocomplete
+    /*global google*/ this.autocomplete = new google.maps.places.Autocomplete(
+      document.getElementById("autocomplete"),
+      options
+    );
+
+    // address.
+    this.autocomplete.setFields(["address_components", "formatted_address"]);
+
+    // Fire Event when a suggested name is selected
+    this.autocomplete.addListener("place_changed", this.handlePlaceSelect);
+  };
+
+  handlePlaceSelect = () => {
+    // Extract City From Address Object
+    const addressObject = this.autocomplete.getPlace();
+    const address = addressObject.address_components;
+
+    // Check if address is valid
+    if (address) {
+      // Set State
+      this.setState({
+        city: address[0].long_name,
+      });
+    }
+  };
+
   // displays the options in the searchBar
 
   renderSortByOptions() {
@@ -89,6 +136,7 @@ class SearchBar extends React.Component {
             onChange={this.handleTermChange}
             placeholder="Search Businesses"
           />
+          <Script url={this.googleUrl} onLoad={this.handleScriptLoad} />
           <input
             onChange={this.handleLocationChange}
             placeholder="Where?"
