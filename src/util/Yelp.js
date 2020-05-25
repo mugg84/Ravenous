@@ -1,6 +1,6 @@
 // Please add personal
 
-const apiKey = "APIKEY";
+const apiKey = "Insert Key";
 
 const Yelp = {
   async search(term, location, sortBy) {

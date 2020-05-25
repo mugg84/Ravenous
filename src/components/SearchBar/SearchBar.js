@@ -1,12 +1,8 @@
 import React from "react";
 import "./SearchBar.css";
+import DisplaySearchBar from "../DisplaySearchBar/DisplaySearchBar";
 
-//Import React Script Libraray to load Google object
-import Script from "react-load-script";
-
-//IMPORTANT
-
-const googleKey = "add you api key";
+const googleKey = "Insert Key";
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -24,6 +20,7 @@ class SearchBar extends React.Component {
     this.handleTermChange = this.handleTermChange.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.renderSortByOptions = this.renderSortByOptions.bind(this);
 
     this.sortByOptions = {
       "Best Match": "best_match",
@@ -127,26 +124,14 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-      <div className="SearchBar" onKeyPress={this.handleSearch}>
-        <div className="SearchBar-sort-options">
-          <ul>{this.renderSortByOptions()}</ul>
-        </div>
-        <div className="SearchBar-fields">
-          <input
-            onChange={this.handleTermChange}
-            placeholder="Search Businesses"
-          />
-          <Script url={this.googleUrl} onLoad={this.handleScriptLoad} />
-          <input
-            onChange={this.handleLocationChange}
-            placeholder="Where?"
-            id="autocomplete"
-          />
-        </div>
-        <div className="SearchBar-submit">
-          <a onClick={this.handleSearch}>Let's Go</a>
-        </div>
-      </div>
+      <DisplaySearchBar
+        renderSortByOptions={this.renderSortByOptions}
+        handleTermChange={this.handleTermChange}
+        googleUrl={this.googleUrl}
+        handleScriptLoad={this.handleScriptLoad}
+        handleLocationChange={this.handleLocationChange}
+        handleSearch={this.handleSearch}
+      />
     );
   }
 }
