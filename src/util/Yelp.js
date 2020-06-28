@@ -1,6 +1,6 @@
 // Please add personal
 
-const apiKey = "Insert Key";
+const apiKey = process.env.REACT_APP_YELP_API_KEY;
 
 const Yelp = {
   async search(term, location, sortBy) {
@@ -16,13 +16,12 @@ const Yelp = {
       let jsonResponse = await response.json();
       if (jsonResponse.businesses) {
         return jsonResponse.businesses.map((business) => {
-          console.log(business);
           return {
             id: business.id,
             imageSrc: business.image_url,
             name: business.name,
             url: business.url,
-            googleMaps: `https://google.com/maps/place/${business.location.address1}`,
+            googleMaps: `ht.btps://google.com/maps/place/${business.location.address1}`,
             address: business.location.address1,
             city: business.location.city,
             state: business.location.state,
