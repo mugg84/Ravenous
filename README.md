@@ -4,6 +4,8 @@
 
 To build a Yelp-like clone using the Yelp API.
 
-### Extra
+### Extra features
 
-Refactored to functional components, added a context to manage global state and Google autocomplete feautre for location input.
+- Refactored to functional components
+- Added Context to manage global state
+- Google autocomplete feautre for location input.
